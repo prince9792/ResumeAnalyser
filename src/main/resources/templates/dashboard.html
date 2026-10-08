@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Resume Analyser - Dashboard</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        .navbar {
+            width: 100%;
+            background: #111827;
+            color: white;
+            padding: 16px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            text-decoration: none;
+            padding: 9px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #bb2d3b;
+        }
+
+
+        /* =========================
+           MAIN CONTAINER
+        ========================= */
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 40px auto;
+        }
+
+
+        /* =========================
+           WELCOME SECTION
+        ========================= */
+
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .welcome p {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+
+        /* =========================
+           FEATURE CARDS
+        ========================= */
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+            transition: 0.25s;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.10);
+        }
+
+        .card-icon {
+            font-size: 38px;
+            margin-bottom: 15px;
+        }
+
+        .card h2 {
+            font-size: 21px;
+            margin-bottom: 10px;
+            color: #111827;
+        }
+
+        .card p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           BUTTONS
+        ========================= */
+
+        .btn {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .upload-btn {
+            background: #0d6efd;
+        }
+
+        .upload-btn:hover {
+            background: #0b5ed7;
+        }
+
+        .analyze-btn {
+            background: #198754;
+        }
+
+        .analyze-btn:hover {
+            background: #157347;
+        }
+
+        .history-btn {
+            background: #6f42c1;
+        }
+
+        .history-btn:hover {
+            background: #59359c;
+        }
+
+        .recommend-btn {
+            background: #fd7e14;
+        }
+
+        .recommend-btn:hover {
+            background: #dc6502;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            text-align: center;
+            margin-top: 45px;
+            padding: 20px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================= */
+
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .container {
+                width: 92%;
+                margin: 25px auto;
+            }
+
+            .welcome h1 {
+                font-size: 24px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        Resume Analyser
+    </div>
+
+    <a th:href="@{/logout}"
+       class="logout-btn">
+        Logout
+    </a>
+
+</nav>
+
+
+<!-- =========================
+     MAIN CONTENT
+========================= -->
+
+<div class="container">
+
+
+    <!-- WELCOME -->
+
+    <div class="welcome">
+
+        <h1>
+            Welcome,
+            <span th:text="${session.loggedInUser.fullName}">
+                User
+            </span>
+            👋
+        </h1>
+
+        <p>
+            Analyze your resume, compare your skills with job
+            requirements and improve your career opportunities.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         FEATURE CARDS
+    ========================= -->
+
+    <div class="cards">
+
+
+        <!-- UPLOAD RESUME -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                📄
+            </div>
+
+            <h2>
+                Upload Resume
+            </h2>
+
+            <p>
+                Upload your PDF resume and extract your
+                skills automatically.
+            </p>
+
+            <a th:href="@{/upload-resume}"
+               class="btn upload-btn">
+
+                Upload Resume
+
+            </a>
+
+        </div>
+
+
+        <!-- ANALYZE RESUME -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🔍
+            </div>
+
+            <h2>
+                Analyze Resume
+            </h2>
+
+            <p>
+                Compare your resume skills with the required
+                skills of a selected job.
+            </p>
+
+            <a th:href="@{/analyze}"
+               class="btn analyze-btn">
+
+                Analyze Resume
+
+            </a>
+
+        </div>
+
+
+        <!-- ANALYSIS HISTORY -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                📊
+            </div>
+
+            <h2>
+                Analysis History
+            </h2>
+
+            <p>
+                View your previous resume analysis results,
+                matched skills and missing skills.
+            </p>
+
+            <a th:href="@{/history}"
+               class="btn history-btn">
+
+                View History
+
+            </a>
+
+        </div>
+
+
+        <!-- RECOMMENDATIONS -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                💡
+            </div>
+
+            <h2>
+                Skill Recommendations
+            </h2>
+
+            <p>
+                Explore recommended skills and learning
+                resources to improve your resume.
+            </p>
+
+            <a th:href="@{/recommendations}"
+               class="btn recommend-btn">
+
+                View Recommendations
+
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <div class="footer">
+
+        © 2026 Resume Analyser |
+        Java + Spring Boot + MySQL
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

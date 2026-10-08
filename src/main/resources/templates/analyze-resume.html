@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Analyze Resume</title>
+
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 50px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #842029;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            background: #e7f1ff;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 18px;
+            background: #6c757d;
+            color: white;
+            border-radius: 6px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>
+            Analyze Resume
+        </h1>
+
+
+        <div class="info">
+
+            Select your uploaded resume and
+            compare it with a job.
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div
+            class="error"
+            th:if="${error}"
+            th:text="${error}">
+
+            Error message
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form
+            method="post"
+            action="/analyze">
+
+
+            <!-- RESUME -->
+
+            <label for="resumeId">
+
+                Select Resume
+
+            </label>
+
+
+            <select
+                id="resumeId"
+                name="resumeId"
+                required>
+
+
+                <option value="">
+
+                    -- Select Resume --
+
+                </option>
+
+
+                <option
+                    th:each="resume : ${resumes}"
+                    th:value="${resume.id}"
+                    th:text="${resume.fileName}">
+
+                    resume.pdf
+
+                </option>
+
+
+            </select>
+
+
+            <!-- JOB -->
+
+            <label for="jobId">
+
+                Select Job
+
+            </label>
+
+
+            <select
+                id="jobId"
+                name="jobId"
+                required>
+
+
+                <option value="">
+
+                    -- Select Job --
+
+                </option>
+
+
+                <option
+                    th:each="job : ${jobs}"
+                    th:value="${job.id}"
+                    th:text="${job.jobTitle}">
+
+                    Java Developer
+
+                </option>
+
+
+            </select>
+
+
+            <button type="submit">
+
+                Analyze Resume
+
+            </button>
+
+
+        </form>
+
+
+        <div class="buttons">
+
+            <a href="/dashboard"
+               class="btn">
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

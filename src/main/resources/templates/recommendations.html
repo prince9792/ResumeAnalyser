@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Recommendations</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+
+            margin: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: #f4f6f8;
+        }
+
+
+        .container {
+
+            width: 90%;
+
+            max-width: 1100px;
+
+            margin: 40px auto;
+        }
+
+
+        .header {
+
+            background: #212529;
+
+            color: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .header h1 {
+
+            margin: 0 0 10px 0;
+        }
+
+
+        .header p {
+
+            margin: 0;
+        }
+
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(280px, 1fr));
+
+            gap: 20px;
+        }
+
+
+        .card {
+
+            background: white;
+
+            padding: 25px;
+
+            border-radius: 10px;
+
+            box-shadow:
+                0 3px 10px rgba(0,0,0,0.08);
+        }
+
+
+        .skill {
+
+            font-size: 24px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+
+        .description {
+
+            color: #555;
+
+            line-height: 1.6;
+
+            margin-bottom: 15px;
+        }
+
+
+        .resource {
+
+            background: #f8f9fa;
+
+            padding: 12px;
+
+            border-radius: 6px;
+
+            margin-top: 15px;
+        }
+
+
+        .priority {
+
+            display: inline-block;
+
+            padding: 6px 12px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: bold;
+
+            margin-bottom: 15px;
+        }
+
+
+        .high {
+
+            background: #f8d7da;
+
+            color: #842029;
+        }
+
+
+        .medium {
+
+            background: #fff3cd;
+
+            color: #664d03;
+        }
+
+
+        .low {
+
+            background: #d1e7dd;
+
+            color: #0f5132;
+        }
+
+
+        .buttons {
+
+            margin-top: 30px;
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+        }
+
+
+        .btn {
+
+            text-decoration: none;
+
+            padding: 12px 20px;
+
+            background: #007bff;
+
+            color: white;
+
+            border-radius: 6px;
+        }
+
+
+        .btn:hover {
+
+            opacity: 0.9;
+        }
+
+
+        .empty {
+
+            background: white;
+
+            padding: 30px;
+
+            text-align: center;
+
+            border-radius: 10px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>
+            Skill Improvement Recommendations
+        </h1>
+
+        <p>
+            Improve your technical skills based on
+            job requirements.
+        </p>
+
+    </div>
+
+
+    <!-- EMPTY -->
+
+    <div class="empty"
+         th:if="${#lists.isEmpty(recommendations)}">
+
+        <h2>
+            No Recommendations Available
+        </h2>
+
+        <p>
+            No skill recommendations have been
+            configured yet.
+        </p>
+
+    </div>
+
+
+    <!-- RECOMMENDATIONS -->
+
+    <div class="grid"
+         th:if="${not #lists.isEmpty(recommendations)}">
+
+
+        <div class="card"
+             th:each="recommendation :
+                     ${recommendations}">
+
+
+            <!-- SKILL -->
+
+            <div class="skill"
+                 th:text="${recommendation.skill}">
+
+                React
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <span class="priority"
+                  th:classappend="${#strings.toLowerCase(recommendation.priority)}">
+
+                <span
+                    th:text="${recommendation.priority}">
+
+                    HIGH
+
+                </span>
+
+            </span>
+
+
+            <!-- DESCRIPTION -->
+
+            <div class="description"
+                 th:text="${recommendation.description}">
+
+                Learn React and build
+                practical projects.
+
+            </div>
+
+
+            <!-- RESOURCE -->
+
+            <div class="resource">
+
+                <strong>
+                    Practice:
+                </strong>
+
+                <span
+                    th:text="${recommendation.resource}">
+
+                    Build projects.
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUTTONS -->
+
+    <div class="buttons">
+
+        <a href="/analyze"
+           class="btn">
+
+            Analyze Resume
+
+        </a>
+
+
+        <a href="/history"
+           class="btn">
+
+            View History
+
+        </a>
+
+
+        <a href="/dashboard"
+           class="btn">
+
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>

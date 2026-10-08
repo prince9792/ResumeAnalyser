@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Create Job - Resume Analyser</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: #667eea;
+            color: white;
+            padding: 18px 40px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            margin: 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 14px;
+        }
+
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+
+            border: 1px solid #ccc;
+            border-radius: 6px;
+
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #667eea;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .error {
+            color: red;
+            font-size: 13px;
+            margin-top: 6px;
+            display: block;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+
+            padding: 12px;
+            border-radius: 6px;
+
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            width: 100%;
+
+            padding: 13px;
+
+            background: #667eea;
+            color: white;
+
+            border: none;
+            border-radius: 6px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #5568d8;
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-top: 20px;
+
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVBAR
+     ========================= -->
+
+<div class="navbar">
+
+    <h2>
+        Resume Analyser
+    </h2>
+
+    <div>
+
+        <a href="/admin/dashboard">
+            Dashboard
+        </a>
+
+        <a href="/admin/jobs">
+            Jobs
+        </a>
+
+        <a href="/logout">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     MAIN CONTAINER
+     ========================= -->
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>
+            Create Job
+        </h1>
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div
+            class="success"
+            th:if="${success}"
+            th:text="${success}">
+        </div>
+
+
+
+        <!-- JOB FORM -->
+
+        <form
+            th:action="@{/admin/job/save}"
+            th:object="${job}"
+            method="post">
+
+
+            <!-- JOB TITLE -->
+
+            <div class="form-group">
+
+                <label for="jobTitle">
+                    Job Title
+                </label>
+
+                <input
+                    type="text"
+                    id="jobTitle"
+                    th:field="*{jobTitle}"
+                    placeholder="Example: Java Developer">
+
+
+                <!-- JOB TITLE ERROR -->
+
+                <div
+                    class="error"
+                    th:if="${#fields.hasErrors('jobTitle')}"
+                    th:errors="*{jobTitle}">
+                </div>
+
+            </div>
+
+
+
+            <!-- REQUIRED SKILLS -->
+
+            <div class="form-group">
+
+                <label for="requiredSkills">
+                    Required Skills
+                </label>
+
+                <textarea
+                    id="requiredSkills"
+                    th:field="*{requiredSkills}"
+                    placeholder="Example: Java, Spring Boot, MySQL, Git"></textarea>
+
+
+                <!-- REQUIRED SKILLS ERROR -->
+
+                <div
+                    class="error"
+                    th:if="${#fields.hasErrors('requiredSkills')}"
+                    th:errors="*{requiredSkills}">
+                </div>
+
+            </div>
+
+
+
+            <!-- SUBMIT BUTTON -->
+
+            <button
+                type="submit"
+                class="btn">
+
+                Create Job
+
+            </button>
+
+        </form>
+
+
+
+        <!-- BACK BUTTON -->
+
+        <a
+            href="/admin/dashboard"
+            class="back">
+
+            ← Back to Dashboard
+
+        </a>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>

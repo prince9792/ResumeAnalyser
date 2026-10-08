@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Resume Analysis Result</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1150px;
+            margin: 40px auto;
+        }
+
+        .header {
+            background: #212529;
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            margin-top: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+        }
+
+        .score-section {
+            text-align: center;
+        }
+
+        .score {
+            font-size: 65px;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .grade {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .performance {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 28px;
+            background: #e9ecef;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #28a745;
+            color: white;
+            font-weight: bold;
+            line-height: 28px;
+        }
+
+        .skills-container {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .skills-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .matched {
+            background: #e8f7ee;
+            border: 1px solid #b7e4c7;
+        }
+
+        .missing {
+            background: #fff0f0;
+            border: 1px solid #f5c2c7;
+        }
+
+        .skills-box li {
+            margin-bottom: 8px;
+        }
+
+        .recommendation-card {
+            border-left: 5px solid #ffc107;
+            background: #fffaf0;
+            padding: 18px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+        }
+
+        .recommendation-skill {
+            font-size: 21px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .priority {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .HIGH {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .MEDIUM {
+            background: #fff3cd;
+            color: #664d03;
+        }
+
+        .LOW {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-history {
+            background: #6c757d;
+        }
+
+        .btn-dashboard {
+            background: #212529;
+        }
+
+        .empty {
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- ================================================= -->
+    <!-- HEADER -->
+    <!-- ================================================= -->
+
+    <div class="header">
+
+        <h1>
+            Resume Analysis Result
+        </h1>
+
+        <p>
+
+            <strong>Resume:</strong>
+
+            <span th:text="${resume.fileName}">
+                resume.pdf
+            </span>
+
+        </p>
+
+        <p>
+
+            <strong>Job:</strong>
+
+            <span th:text="${job.jobTitle}">
+                Java Developer
+            </span>
+
+        </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SCORE -->
+    <!-- ================================================= -->
+
+    <div class="card score-section">
+
+        <h2>
+            Resume Match Score
+        </h2>
+
+        <div class="score">
+
+            <span th:text="${result.score}">
+                80
+            </span>
+
+            /100
+
+        </div>
+
+
+        <div class="grade">
+
+            Grade:
+
+            <span th:text="${result.grade}">
+                A
+            </span>
+
+        </div>
+
+
+        <div class="performance">
+
+            <span th:text="${result.performance}">
+                Very Good
+            </span>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div class="progress-bar"
+                 th:style="'width:' + ${result.matchPercentage} + '%;'"
+                 th:text="${result.matchPercentage + '%'}">
+
+                80%
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- SKILLS -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <h2>
+            Skill Analysis
+        </h2>
+
+
+        <div class="skills-container">
+
+
+            <!-- MATCHED -->
+
+            <div class="skills-box matched">
+
+                <h3>
+                    Matched Skills
+                </h3>
+
+
+                <ul>
+
+                    <li
+                        th:each="skill : ${result.matchedSkills}"
+                        th:text="${skill}">
+
+                        Java
+
+                    </li>
+
+                </ul>
+
+
+                <p
+                    th:if="${#lists.isEmpty(result.matchedSkills)}">
+
+                    No matching skills found.
+
+                </p>
+
+            </div>
+
+
+            <!-- MISSING -->
+
+            <div class="skills-box missing">
+
+                <h3>
+                    Missing Skills
+                </h3>
+
+
+                <ul>
+
+                    <li
+                        th:each="skill : ${result.missingSkills}"
+                        th:text="${skill}">
+
+                        React
+
+                    </li>
+
+                </ul>
+
+
+                <p
+                    th:if="${#lists.isEmpty(result.missingSkills)}">
+
+                    No missing skills.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RECOMMENDATIONS -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <h2>
+            Skill Improvement Recommendations
+        </h2>
+
+
+        <!-- Recommendations available -->
+
+        <div
+            th:if="${not #lists.isEmpty(recommendations)}">
+
+
+            <div
+                class="recommendation-card"
+                th:each="recommendation :
+                         ${recommendations}">
+
+
+                <div class="recommendation-skill"
+                     th:text="${recommendation.skill}">
+
+                    React
+
+                </div>
+
+
+                <span
+                    class="priority"
+                    th:classappend="${recommendation.priority}"
+                    th:text="${recommendation.priority}">
+
+                    HIGH
+
+                </span>
+
+
+                <p
+                    th:text="${recommendation.description}">
+
+                    Learn this skill.
+
+                </p>
+
+
+                <p>
+
+                    <strong>
+                        Practice:
+                    </strong>
+
+                    <span
+                        th:text="${recommendation.resource}">
+
+                        Build practical projects.
+
+                    </span>
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- No missing skills -->
+
+        <div
+            class="empty"
+            th:if="${#lists.isEmpty(recommendations)}">
+
+            <h3>
+                Excellent!
+            </h3>
+
+            <p>
+                Your resume contains all the
+                required skills for this job.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- RESUME SKILLS -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <h2>
+            Skills Detected in Resume
+        </h2>
+
+
+        <ul>
+
+            <li
+                th:each="skill : ${resumeSkills}"
+                th:text="${skill}">
+
+                Java
+
+            </li>
+
+        </ul>
+
+
+        <p
+            th:if="${#lists.isEmpty(resumeSkills)}">
+
+            No predefined skills detected.
+
+        </p>
+
+    </div>
+
+
+    <!-- ================================================= -->
+    <!-- BUTTONS -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <div class="buttons">
+
+            <a href="/analyze"
+               class="btn">
+
+                Analyze Another Resume
+
+            </a>
+
+
+            <a href="/history"
+               class="btn btn-history">
+
+                View History
+
+            </a>
+
+
+            <a href="/dashboard"
+               class="btn btn-dashboard">
+
+                Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>
